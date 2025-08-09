@@ -17,6 +17,7 @@ internal sealed class HandsomeTweaksSettings {
 		public bool IsStructuredTranslationEnabled { get; set; } = true;
 		public bool IsXLibLevelUpNotificationEnabled { get; set; } = true;
 		public bool IsResonatorMechanicalPowerEnabled { get; set; } = true;
+		public bool IsCulinaryTweaksEnabled { get; set; } = true;
 	}
 
 	internal sealed class MergeStacksOnGroundSettings {

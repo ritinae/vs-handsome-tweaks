@@ -97,6 +97,13 @@
         },
         {
             "type": "boolean",
+            "ingui": "handsometweaks:settings-startup-culinarytweaksenabled-label",
+            "code": "Startup/IsCulinaryTweaksEnabled",
+            "default": true,
+            "comment": "handsometweaks:settings-startup-culinarytweaksenabled-comment"
+        },
+        {
+            "type": "boolean",
             "ingui": "handsometweaks:settings-startup-structuredtranslationenabled-label",
             "code": "Startup/IsStructuredTranslationEnabled",
             "default": true,

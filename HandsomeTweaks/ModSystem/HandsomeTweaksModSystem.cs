@@ -19,6 +19,7 @@ using StructuredLangFile = Jakojaannos.HandsomeTweaks.Modules.StructuredLangFile
 using KeepHandbookHistory = Jakojaannos.HandsomeTweaks.Modules.KeepHandbookHistory.ModuleInfo;
 using XLibLevelUpNotification = Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification.ModuleInfo;
 using ResonatorMechanicalPower = Jakojaannos.HandsomeTweaks.Modules.ResonatorMechanicalPower.ModuleInfo;
+using CulinaryTweaks = Jakojaannos.HandsomeTweaks.Modules.CulinaryTweaks.ModuleInfo;
 using Jakojaannos.HandsomeTweaks.Modules.ResonatorMechanicalPower.GameContent;
 
 
@@ -92,6 +93,10 @@ public class HandsomeTweaksModSystem : VSModSystem {
 
 		if (Settings.Startup.IsResonatorMechanicalPowerEnabled) {
 			_harmony.PatchCategory(ResonatorMechanicalPower.PATCH_CATEGORY);
+		}
+
+		if (Settings.Startup.IsCulinaryTweaksEnabled) {
+			_harmony.PatchCategory(CulinaryTweaks.PATCH_CATEGORY);
 		}
 	}
 

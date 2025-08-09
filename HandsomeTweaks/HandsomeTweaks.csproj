@@ -51,6 +51,12 @@
 			<HintPath>$(VINTAGE_STORY_DEV_MODS)/1.20.x/xlib/xlib.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+
+		<!-- For saucepan tweaks -->
+		<Reference Include="ACulinaryArtillery">
+			<HintPath>$(VINTAGE_STORY_DEV_MODS)/1.20.x/ACulinaryArtillery/ACulinaryArtillery.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
