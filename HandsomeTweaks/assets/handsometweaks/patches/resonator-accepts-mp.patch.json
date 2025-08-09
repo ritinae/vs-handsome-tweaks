@@ -3,7 +3,7 @@
         "file": "game:blocktypes/machine/resonator.json",
         "op": "addmerge",
         "path": "/entityBehaviors/-",
-        "value": { "name": "MPConsumer" }
+        "value": { "name": "MPConsumer", "properties": { "resistance": 0.05 } }
     },
     {
         "file": "game:blocktypes/machine/resonator.json",

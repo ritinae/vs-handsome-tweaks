@@ -24,7 +24,7 @@ public static class BlockEntityResonatorPatch {
 		// Autostart music if receiving MP
 		if (__instance.HasDisc) {
 			var mpConsumer = __instance.GetBehavior<BEBehaviorMPConsumer>();
-			if (mpConsumer.TrueSpeed > 0) {
+			if (mpConsumer?.TrueSpeed > 0) {
 				StartMusic(__instance);
 			}
 		}
@@ -45,7 +45,7 @@ public static class BlockEntityResonatorPatch {
 		// enabled iff the resonator receives MP.
 		if (___track?.Sound is ILoadedSound sound && !sound.IsPlaying) {
 			var mpConsumer = __instance.GetBehavior<BEBehaviorMPConsumer>();
-			if (mpConsumer.TrueSpeed > 0) {
+			if (mpConsumer?.TrueSpeed > 0) {
 				__instance.Api.World.PlaySoundAt(new AssetLocation("sounds/block/vinyl"), __instance.Pos, 0.0, null, randomizePitch: false);
 				___track.Sound.Start();
 			}
