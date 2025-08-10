@@ -27,7 +27,7 @@ internal class ConfigLibCompat {
 			return null;
 		}
 
-		return new ConfigLibCompat(logger, api);
+		return new(logger, api);
 	}
 
 	internal void SubscribeToConfigChange() {

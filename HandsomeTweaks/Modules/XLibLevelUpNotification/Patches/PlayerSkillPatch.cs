@@ -1,18 +1,21 @@
 using HarmonyLib;
 
-using Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification.Client.Gui;
-
 using Vintagestory.API.Client;
 
 using XLib.XLeveling;
 
-using static Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification.ModuleInfo;
+using Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification.Client.Gui;
 
 namespace Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification.Patches;
 
 [HarmonyPatch(typeof(PlayerSkill))]
-[HarmonyPatchCategory(PATCH_CATEGORY)]
+[HarmonyPatchCategory(XLibLevelUpNotification.PATCH_CATEGORY)]
 public static class PlayerSkillPatch {
+	[HarmonyPrepare]
+	public static bool IsEnabled() {
+		return XLibLevelUpNotification.IsEnabled;
+	}
+
 	public readonly struct SetExperiencePatchState {
 		public required int LevelBefore { get; init; }
 	}

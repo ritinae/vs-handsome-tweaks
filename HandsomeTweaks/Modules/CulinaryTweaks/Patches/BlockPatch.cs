@@ -5,13 +5,16 @@ using HarmonyLib;
 using Vintagestory.API.Common;
 using Vintagestory.GameContent;
 
-using static Jakojaannos.HandsomeTweaks.Modules.CulinaryTweaks.ModuleInfo;
-
 namespace Jakojaannos.HandsomeTweaks.Modules.CulinaryTweaks.Patches;
 
-[HarmonyPatchCategory(PATCH_CATEGORY)]
+[HarmonyPatchCategory(CulinaryTweaks.PATCH_CATEGORY)]
 [HarmonyPatch(typeof(Block))]
 public static class BlockPatch {
+	[HarmonyPrepare]
+	public static bool IsEnabled() {
+		return CulinaryTweaks.IsEnabled;
+	}
+
 	/// <summary>
 	/// Attempts to make saucepan right-clickable in-world into the input slot
 	/// on the firepit. This patch really targets only the `BlockFirepit`, but

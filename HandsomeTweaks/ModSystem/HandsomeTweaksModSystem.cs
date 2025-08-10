@@ -17,10 +17,11 @@ using VSModSystem = Vintagestory.API.Common.ModSystem;
 using MergeStacksOnGround = Jakojaannos.HandsomeTweaks.Modules.MergeStacksOnGround.ModuleInfo;
 using StructuredLangFile = Jakojaannos.HandsomeTweaks.Modules.StructuredLangFile.ModuleInfo;
 using KeepHandbookHistory = Jakojaannos.HandsomeTweaks.Modules.KeepHandbookHistory.ModuleInfo;
-using XLibLevelUpNotification = Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification.ModuleInfo;
+using XLibLevelUpNotification = Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification.XLibLevelUpNotification;
 using ResonatorMechanicalPower = Jakojaannos.HandsomeTweaks.Modules.ResonatorMechanicalPower.ModuleInfo;
-using CulinaryTweaks = Jakojaannos.HandsomeTweaks.Modules.CulinaryTweaks.ModuleInfo;
 using Jakojaannos.HandsomeTweaks.Modules.ResonatorMechanicalPower.GameContent;
+using Jakojaannos.HandsomeTweaks.Compatibility.ACulinaryArtillery;
+using Jakojaannos.HandsomeTweaks.Compatibility.XLib;
 
 
 namespace Jakojaannos.HandsomeTweaks.ModSystem;
@@ -31,6 +32,9 @@ public class HandsomeTweaksModSystem : VSModSystem {
 	}
 
 	private ConfigLibCompat? _configLib;
+	private ACulinaryArtilleryCompat? _aCulinaryArtillery;
+	private XLibCompat? _xlib;
+
 	private Harmony? _harmony;
 
 	internal event Action<HandsomeTweaksSettings>? SettingsLoaded;
@@ -45,6 +49,9 @@ public class HandsomeTweaksModSystem : VSModSystem {
 
 		_configLib = ConfigLibCompat.TryInitialize(Mod.Logger, api);
 		_configLib?.SubscribeToConfigChange();
+
+		_aCulinaryArtillery = ACulinaryArtilleryCompat.TryInitialize(api);
+		_xlib = XLibCompat.TryInitialize(api);
 
 		ApplyPatches();
 
@@ -87,17 +94,12 @@ public class HandsomeTweaksModSystem : VSModSystem {
 			_harmony.PatchCategory(KeepHandbookHistory.PATCH_CATEGORY);
 		}
 
-		if (Settings.Startup.IsXLibLevelUpNotificationEnabled) {
-			_harmony.PatchCategory(XLibLevelUpNotification.PATCH_CATEGORY);
-		}
-
 		if (Settings.Startup.IsResonatorMechanicalPowerEnabled) {
 			_harmony.PatchCategory(ResonatorMechanicalPower.PATCH_CATEGORY);
 		}
 
-		if (Settings.Startup.IsCulinaryTweaksEnabled) {
-			_harmony.PatchCategory(CulinaryTweaks.PATCH_CATEGORY);
-		}
+		_xlib?.ApplyPatches(_harmony);
+		_aCulinaryArtillery?.ApplyPatches(_harmony);
 	}
 
 	public override void Dispose() {

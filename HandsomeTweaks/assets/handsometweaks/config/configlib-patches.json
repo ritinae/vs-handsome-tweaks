@@ -1,113 +1,132 @@
 {
-    "version": 1,
-    "file": "jakojaannos/handsometweaks.json",
-    "patches": {},
-    "settings": [
-        {
-            "type": "separator",
-            "title": "handsometweaks:settings-mergestacksonground-title",
-            "text": "handsometweaks:settings-mergestacksonground-description"
-        },
-        {
-            "type": "boolean",
-            "ingui": "handsometweaks:settings-mergestacksonground-renderpatchenabled-label",
-            "code": "MergeStacksOnGround/IsRenderPatchEnabled",
-            "default": true,
-            "comment": "handsometweaks:settings-mergestacksonground-renderpatchenabled-comment"
-        },
-        {
-            "type": "integer",
-            "ingui": "handsometweaks:settings-mergestacksonground-maxrenderedstacks-label",
-            "code": "MergeStacksOnGround/MaxRenderedStacks",
-            "default": 10,
-            "comment": "handsometweaks:settings-mergestacksonground-maxrenderedstacks-comment",
-            "range": {
-                "min": 1,
-                "max": 10
-            }
-        },
-        {
-            "type": "other",
-            "ingui": "handsometweaks:settings-mergestacksonground-strategy-label",
-            "code": "MergeStacksOnGround/Strategy",
-            "default": "Collision",
-            "comment": "handsometweaks:settings-mergestacksonground-strategy-comment",
-            "mapping": {
-                "Continuous": 0,
-                "Collision": 1
-            }
-        },
+	"version": 2,
+	"file": "jakojaannos/handsometweaks.json",
 
-        {
-            "type": "separator",
-            "title": "handsometweaks:settings-keephandbookhistory-title",
-            "text": "handsometweaks:settings-keephandbookhistory-description"
-        },
-        {
-            "type": "boolean",
-            "ingui": "handsometweaks:settings-keephandbookhistory-keepbrowsehistory-label",
-            "code": "KeepHandbookHistory/IsHistoryPersistent",
-            "default": true,
-            "comment": "handsometweaks:settings-keephandbookhistory-keepbrowsehistory-comment"
-        },
-        {
-            "type": "integer",
-            "ingui": "handsometweaks:settings-keephandbookhistory-historymaxsize-label",
-            "code": "KeepHandbookHistory/HistoryMaxSize",
-            "default": 50,
-            "comment": "handsometweaks:settings-keephandbookhistory-historymaxsize-comment",
-            "range": {
-                "min": 1,
-                "max": 100
-            }
-        },
+	"patches": {
+		"boolean": {
+			"handsometweaks:patches/add-class-pathfinder.patch.json": {
+				"/0/enabled": "Startup/IsPathfinderClassEnabled",
+				"/1/enabled": "Startup/IsPathfinderClassEnabled"
+			},
+			"handsometweaks:patches/resonator-accepts-mp.patch.json": {
+				"/0/enabled": "Startup/IsResonatorMechanicalPowerEnabled",
+				"/1/enabled": "Startup/IsResonatorMechanicalPowerEnabled"
+			}
+		}
+	},
+	"settings": [
+		{
+			"type": "separator",
+			"title": "handsometweaks:settings-mergestacksonground-title",
+			"text": "handsometweaks:settings-mergestacksonground-description"
+		},
+		{
+			"type": "boolean",
+			"ingui": "handsometweaks:settings-mergestacksonground-renderpatchenabled-label",
+			"code": "MergeStacksOnGround/IsRenderPatchEnabled",
+			"default": true,
+			"comment": "handsometweaks:settings-mergestacksonground-renderpatchenabled-comment"
+		},
+		{
+			"type": "integer",
+			"ingui": "handsometweaks:settings-mergestacksonground-maxrenderedstacks-label",
+			"code": "MergeStacksOnGround/MaxRenderedStacks",
+			"default": 10,
+			"comment": "handsometweaks:settings-mergestacksonground-maxrenderedstacks-comment",
+			"range": {
+				"min": 1,
+				"max": 10
+			}
+		},
+		{
+			"type": "other",
+			"ingui": "handsometweaks:settings-mergestacksonground-strategy-label",
+			"code": "MergeStacksOnGround/Strategy",
+			"default": "Collision",
+			"comment": "handsometweaks:settings-mergestacksonground-strategy-comment",
+			"mapping": {
+				"Continuous": 0,
+				"Collision": 1
+			}
+		},
 
-        {
-            "type": "separator",
-            "title": "handsometweaks:settings-startup-title",
-            "text": "handsometweaks:settings-startup-description"
-        },
-        {
-            "type": "boolean",
-            "ingui": "handsometweaks:settings-startup-mergestacksongroundenabled-label",
-            "code": "Startup/IsMergeStacksOnGroundEnabled",
-            "default": true,
-            "comment": "handsometweaks:settings-startup-mergestacksongroundenabled-comment"
-        },
-        {
-            "type": "boolean",
-            "ingui": "handsometweaks:settings-startup-keephandbookhistoryenabled-label",
-            "code": "Startup/IsKeepHandbookHistoryEnabled",
-            "default": true,
-            "comment": "handsometweaks:settings-startup-keephandbookhistoryenabled-comment"
-        },
-        {
-            "type": "boolean",
-            "ingui": "handsometweaks:settings-startup-resonatormechanicalpowerenabled-label",
-            "code": "Startup/IsResonatorMechanicalPowerEnabled",
-            "default": true,
-            "comment": "handsometweaks:settings-startup-resonatormechanicalpowerenabled-comment"
-        },
-        {
-            "type": "boolean",
-            "ingui": "handsometweaks:settings-startup-xliblevelupnotificationenabled-label",
-            "code": "Startup/IsXLibLevelUpNotificationEnabled",
-            "default": true,
-            "comment": "handsometweaks:settings-startup-xliblevelupnotificationenabled-comment"
-        },
-        {
-            "type": "boolean",
-            "ingui": "handsometweaks:settings-startup-culinarytweaksenabled-label",
-            "code": "Startup/IsCulinaryTweaksEnabled",
-            "default": true,
-            "comment": "handsometweaks:settings-startup-culinarytweaksenabled-comment"
-        },
-        {
-            "type": "boolean",
-            "ingui": "handsometweaks:settings-startup-structuredtranslationenabled-label",
-            "code": "Startup/IsStructuredTranslationEnabled",
-            "default": true,
-            "comment": "handsometweaks:settings-startup-structuredtranslationenabled-comment"
-        }
-    ]
+		{
+			"type": "separator",
+			"title": "handsometweaks:settings-keephandbookhistory-title",
+			"text": "handsometweaks:settings-keephandbookhistory-description"
+		},
+		{
+			"type": "boolean",
+			"ingui": "handsometweaks:settings-keephandbookhistory-keepbrowsehistory-label",
+			"code": "KeepHandbookHistory/IsHistoryPersistent",
+			"default": true,
+			"comment": "handsometweaks:settings-keephandbookhistory-keepbrowsehistory-comment"
+		},
+		{
+			"type": "integer",
+			"ingui": "handsometweaks:settings-keephandbookhistory-historymaxsize-label",
+			"code": "KeepHandbookHistory/HistoryMaxSize",
+			"default": 50,
+			"comment": "handsometweaks:settings-keephandbookhistory-historymaxsize-comment",
+			"range": {
+				"min": 1,
+				"max": 100
+			}
+		},
+
+		{
+			"type": "separator",
+			"title": "handsometweaks:settings-startup-title",
+			"text": "handsometweaks:settings-startup-description"
+		},
+		{
+			"type": "boolean",
+			"ingui": "handsometweaks:settings-startup-mergestacksongroundenabled-label",
+			"code": "Startup/IsMergeStacksOnGroundEnabled",
+			"default": true,
+			"comment": "handsometweaks:settings-startup-mergestacksongroundenabled-comment"
+		},
+		{
+			"type": "boolean",
+			"ingui": "handsometweaks:settings-startup-keephandbookhistoryenabled-label",
+			"code": "Startup/IsKeepHandbookHistoryEnabled",
+			"default": true,
+			"comment": "handsometweaks:settings-startup-keephandbookhistoryenabled-comment"
+		},
+		{
+			"type": "boolean",
+			"ingui": "handsometweaks:settings-startup-resonatormechanicalpowerenabled-label",
+			"code": "Startup/IsResonatorMechanicalPowerEnabled",
+			"default": true,
+			"comment": "handsometweaks:settings-startup-resonatormechanicalpowerenabled-comment"
+		},
+		{
+			"type": "boolean",
+			"ingui": "handsometweaks:settings-startup-xliblevelupnotificationenabled-label",
+			"code": "Startup/IsXLibLevelUpNotificationEnabled",
+			"default": true,
+			"comment": "handsometweaks:settings-startup-xliblevelupnotificationenabled-comment"
+		},
+		{
+			"type": "boolean",
+			"ingui": "handsometweaks:settings-startup-culinarytweaksenabled-label",
+			"code": "Startup/IsCulinaryTweaksEnabled",
+			"default": true,
+			"comment": "handsometweaks:settings-startup-culinarytweaksenabled-comment"
+		},
+		{
+			"type": "boolean",
+			"ingui": "handsometweaks:settings-startup-pathfinderclassenabled-label",
+			"code": "Startup/IsPathfinderClassEnabled",
+			"default": true,
+			"comment": "handsometweaks:settings-startup-pathfinderclassenabled-comment"
+		},
+		{
+			"type": "boolean",
+			"ingui": "handsometweaks:settings-startup-structuredtranslationenabled-label",
+			"code": "Startup/IsStructuredTranslationEnabled",
+			"default": true,
+			"comment": "handsometweaks:settings-startup-structuredtranslationenabled-comment"
+		}
+	]
 }
