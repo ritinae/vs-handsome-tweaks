@@ -45,6 +45,15 @@ public static class EntityItemRendererPatch {
 		var matcher = new CodeMatcher(instructions, generator);
 		const int SHADOW_PASS_ARG_INDEX = 2;
 
+		matcher = matcher
+			.Start()
+			.MatchStartForward(CodeMatch.Calls(AccessTools.Method(typeof(IRenderAPI), nameof(IRenderAPI.RenderMultiTextureMesh))));
+
+		if (matcher.Remaining == 0) {
+			// FIXME: can't find the main drawcall -> bail out
+			return matcher.Instructions();
+		}
+
 		matcher
 			.Start()
 			// Remove the main drawcall

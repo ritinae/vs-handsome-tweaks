@@ -106,9 +106,6 @@ public static class TranslationServicePatch {
 				break;
 			case JValue jsonValue when jsonValue.Type == JTokenType.String && key.Length > 0:
 				var value = jsonValue.ToString();
-				if (domain != "game") {
-					logger.Debug($"Loading translation entry: Domain={domain}, Key={key}, Value={value}");
-				}
 				LoadEntry(__instance, entryCache, regexCache, wildcardCache, new(key, value), domain);
 				break;
 			default:

@@ -1,13 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using HarmonyLib;
 
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Util;
 
 using Jakojaannos.HandsomeTweaks.Compatibility.ConfigLib;
+using Jakojaannos.HandsomeTweaks.Compatibility.ACulinaryArtillery;
+using Jakojaannos.HandsomeTweaks.Compatibility.XLib;
 using Jakojaannos.HandsomeTweaks.Config;
+using Jakojaannos.HandsomeTweaks.Modules;
+using Jakojaannos.HandsomeTweaks.Modules.GroupedHandbookTab;
 using Jakojaannos.HandsomeTweaks.Modules.MergeStacksOnGround.Patches;
+using Jakojaannos.HandsomeTweaks.Modules.ResonatorMechanicalPower.GameContent;
 using Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification.Client.Gui;
 
 using static Jakojaannos.HandsomeTweaks.ModInfo;
@@ -17,11 +25,7 @@ using VSModSystem = Vintagestory.API.Common.ModSystem;
 using MergeStacksOnGround = Jakojaannos.HandsomeTweaks.Modules.MergeStacksOnGround.ModuleInfo;
 using StructuredLangFile = Jakojaannos.HandsomeTweaks.Modules.StructuredLangFile.ModuleInfo;
 using KeepHandbookHistory = Jakojaannos.HandsomeTweaks.Modules.KeepHandbookHistory.ModuleInfo;
-using XLibLevelUpNotification = Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification.XLibLevelUpNotification;
 using ResonatorMechanicalPower = Jakojaannos.HandsomeTweaks.Modules.ResonatorMechanicalPower.ModuleInfo;
-using Jakojaannos.HandsomeTweaks.Modules.ResonatorMechanicalPower.GameContent;
-using Jakojaannos.HandsomeTweaks.Compatibility.ACulinaryArtillery;
-using Jakojaannos.HandsomeTweaks.Compatibility.XLib;
 
 
 namespace Jakojaannos.HandsomeTweaks.ModSystem;
@@ -35,15 +39,16 @@ public class HandsomeTweaksModSystem : VSModSystem {
 	private ACulinaryArtilleryCompat? _aCulinaryArtillery;
 	private XLibCompat? _xlib;
 
+	private List<ModModule> _modules = new();
+
 	private Harmony? _harmony;
 
 	internal event Action<HandsomeTweaksSettings>? SettingsLoaded;
 
-	private static volatile bool s_isPatchApplied = false;
-	private bool _didPatch = false;
-
 	public override void Start(ICoreAPI api) {
 		Mod.Logger.Debug("Handsome Tweaks Starting!");
+
+		_modules.Add(new GroupedHandbookTab(Mod));
 
 		HandsomeTweaksSettings.SyncWithModConfig(api);
 
@@ -53,9 +58,13 @@ public class HandsomeTweaksModSystem : VSModSystem {
 		_aCulinaryArtillery = ACulinaryArtilleryCompat.TryInitialize(api);
 		_xlib = XLibCompat.TryInitialize(api);
 
-		ApplyPatches();
-
 		api.RegisterBlockClass(nameof(BlockMPResonator), typeof(BlockMPResonator));
+
+		_modules
+			.Where(module => module.ShouldLoad(api))
+			.Foreach(module => module.Start(api));
+
+		ApplyPatches(api);
 	}
 
 	public override void StartClientSide(ICoreClientAPI api) {
@@ -64,20 +73,23 @@ public class HandsomeTweaksModSystem : VSModSystem {
 			.Create("jj.debug.levelup")
 			.WithDescription("Show the level up notification")
 			.HandleWith((args) => new HudLevelUp(api, "Sneak", 100).OnDebugLevelUp());
+
+		_modules
+			.Where(module => module.ShouldLoad(api))
+			.Where(module => module is IClientModModule)
+			.Cast<IClientModModule>()
+			.Foreach(module => module.StartClientSide(api));
 	}
 
-	private void ApplyPatches() {
-		// Don't re-apply patches if they have already been applied
-		if (_harmony is not null || s_isPatchApplied) {
-			Mod.Logger.Debug("Patches already applied - OK!");
-			return;
-		}
-
+	private void ApplyPatches(ICoreAPI api) {
 		Mod.Logger.Debug("Applying patches!");
-		s_isPatchApplied = true;
-		_didPatch = true;
+
 
 		_harmony = new(MOD_ID);
+
+		// FIXME: why isn't the new module thing not applying the patches?
+		_harmony.PatchAll();
+		/*
 		if (Settings.Startup.IsStructuredTranslationEnabled) {
 			_harmony.PatchCategory(StructuredLangFile.PATCH_CATEGORY);
 		}
@@ -100,13 +112,17 @@ public class HandsomeTweaksModSystem : VSModSystem {
 
 		_xlib?.ApplyPatches(_harmony);
 		_aCulinaryArtillery?.ApplyPatches(_harmony);
+
+		_modules
+			//.Where(module => module.ShouldLoad(api))
+			.Foreach(module => module.ApplyPatches(_harmony));
+			*/
 	}
 
 	public override void Dispose() {
-		if (_didPatch && s_isPatchApplied) {
-			_harmony?.UnpatchAll(MOD_ID);
-			s_isPatchApplied = false;
-			_didPatch = false;
-		}
+		_xlib?.Dispose();
+		_aCulinaryArtillery?.Dispose();
+
+		_harmony?.UnpatchAll(MOD_ID);
 	}
 }

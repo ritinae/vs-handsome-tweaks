@@ -92,6 +92,17 @@ public static class GuiDialogHandbookPatch {
 		ILGenerator generator
 	) {
 		var matcher = new CodeMatcher(instructions, generator);
+
+		matcher
+			.Start()
+			// Remove the call to GuiDialogHandbook::initOverviewGui()
+			.MatchStartForward(CodeMatch.Calls(AccessTools.Method(typeof(GuiDialogHandbook), nameof(GuiDialogHandbook.initOverviewGui))));
+
+		if (matcher.Remaining == 0) {
+			// HACK: bail out
+			return matcher.Instructions();
+		}
+
 		matcher
 			.Start()
 			// Remove the call to GuiDialogHandbook::initOverviewGui()

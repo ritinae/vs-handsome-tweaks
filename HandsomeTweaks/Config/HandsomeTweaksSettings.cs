@@ -19,6 +19,7 @@ internal sealed class HandsomeTweaksSettings {
 		public bool IsResonatorMechanicalPowerEnabled { get; set; } = true;
 		public bool IsCulinaryTweaksEnabled { get; set; } = true;
 		public bool IsPathfinderClassEnabled { get; set; } = true;
+		public bool IsGroupedHandbookTabEnabled { get; set; } = true;
 	}
 
 	internal sealed class MergeStacksOnGroundSettings {

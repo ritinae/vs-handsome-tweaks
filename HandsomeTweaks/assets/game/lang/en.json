@@ -5,6 +5,11 @@
 	"characterdesc": {
 		"handsometweaks:pathfinder": "<font color=\"#99c9f9\"><i>Legends foretold she either be walkin' or playing DnD. Who knows.</i></font>"
 	},
+
+	"handbook-category": {
+		"handsometweaks:grouped": "Grouped"
+	},
+
 	"trait": {
 		"handsometweaks:walker": "<font color=\"#84ff84\">• Walker</font>",
 		"handsometweaks:diabetic": "<font color=\"#ff8484\">• Diabetic</font>"
