@@ -20,6 +20,7 @@ internal sealed class HandsomeTweaksSettings {
 		public bool IsCulinaryTweaksEnabled { get; set; } = true;
 		public bool IsPathfinderClassEnabled { get; set; } = true;
 		public bool IsGroupedHandbookTabEnabled { get; set; } = true;
+		public bool IsFirepitTweaksEnabled { get; set; } = true;
 	}
 
 	internal sealed class MergeStacksOnGroundSettings {
