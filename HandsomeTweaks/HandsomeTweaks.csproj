@@ -40,12 +40,6 @@
 
 	<!-- Additional dependencies -->
 	<ItemGroup>
-		<!-- For mod configs -->
-		<Reference Include="ConfigLib">
-			<HintPath>$(VINTAGE_STORY_DEV_MODS)/1.20.x/configlib/configlib.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-
 		<!-- For level up notification -->
 		<Reference Include="XLib">
 			<HintPath>$(VINTAGE_STORY_DEV_MODS)/1.20.x/xlib/xlib.dll</HintPath>

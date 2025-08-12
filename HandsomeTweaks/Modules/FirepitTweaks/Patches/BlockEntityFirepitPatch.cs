@@ -9,11 +9,6 @@ namespace Jakojaannos.HandsomeTweaks.Modules.FirepitTweaks.Patches;
 public static class BlockEntityFirepitPatch {
 	private const int OUTPUT_SLOT = 2;
 
-	[HarmonyPrepare]
-	public static bool IsEnabled() {
-		return FirepitTweaks.IsEnabled;
-	}
-
 	/// <summary>
 	/// Attempts to swap empty cooking pots from firepit output slot to the
 	/// input slot automagically. This occurs e.g. when taking out food from a

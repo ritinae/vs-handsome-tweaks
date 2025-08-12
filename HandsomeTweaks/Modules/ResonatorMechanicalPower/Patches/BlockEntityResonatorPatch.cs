@@ -7,11 +7,9 @@ using Vintagestory.API.Common;
 using Vintagestory.GameContent;
 using Vintagestory.GameContent.Mechanics;
 
-using static Jakojaannos.HandsomeTweaks.Modules.ResonatorMechanicalPower.ModuleInfo;
-
 namespace Jakojaannos.HandsomeTweaks.Modules.ResonatorMechanicalPower.Patches;
 
-[HarmonyPatchCategory(PATCH_CATEGORY)]
+[HarmonyPatchCategory(ResonatorMechanicalPower.PATCH_CATEGORY)]
 [HarmonyPatch(typeof(BlockEntityResonator))]
 public static class BlockEntityResonatorPatch {
 	[HarmonyPostfix]

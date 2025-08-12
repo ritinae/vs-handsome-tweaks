@@ -3,23 +3,22 @@ using System.Linq;
 
 using HarmonyLib;
 
+using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
+
 using Jakojaannos.HandsomeTweaks.Config;
 using Jakojaannos.HandsomeTweaks.Util;
 
-using Vintagestory.API.Common;
-
-using static Jakojaannos.HandsomeTweaks.Modules.MergeStacksOnGround.ModuleInfo;
 using static Jakojaannos.HandsomeTweaks.Config.HandsomeTweaksSettings.MergeStacksOnGroundSettings;
-using Vintagestory.API.Common.Entities;
 
 namespace Jakojaannos.HandsomeTweaks.Modules.MergeStacksOnGround.Patches;
 
 [HarmonyPatch(typeof(EntityItem))]
-[HarmonyPatchCategory(PATCH_CATEGORY)]
+[HarmonyPatchCategory(MergeStacksOnGround.PATCH_CATEGORY)]
 public static class EntityItemPatch {
 	public const string RENDER_PATCH = "renderpatch";
 
-	internal static readonly string ATTRIBUTE_LISTENER_ID = Attributes.Id(MODULE_ID, "listener");
+	internal static readonly string ATTRIBUTE_LISTENER_ID = Attributes.Id(MergeStacksOnGround.MODULE_ID, "listener");
 
 	private static HandsomeTweaksSettings.MergeStacksOnGroundSettings Settings
 		=> HandsomeTweaksSettings.Instance.MergeStacksOnGround;

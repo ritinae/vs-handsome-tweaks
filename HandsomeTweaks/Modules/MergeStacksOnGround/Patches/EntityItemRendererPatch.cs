@@ -1,28 +1,25 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection.Emit;
 
 using HarmonyLib;
-
-using Jakojaannos.HandsomeTweaks.Config;
-using Jakojaannos.HandsomeTweaks.Util;
 
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 
-using static Jakojaannos.HandsomeTweaks.Modules.MergeStacksOnGround.ModuleInfo;
+using Jakojaannos.HandsomeTweaks.Config;
+using Jakojaannos.HandsomeTweaks.Util;
 
 namespace Jakojaannos.HandsomeTweaks.Modules.MergeStacksOnGround.Patches;
 
 [HarmonyPatch]
-[HarmonyPatchCategory(PATCH_CATEGORY + RENDER_PATCH)]
+[HarmonyPatchCategory(MergeStacksOnGround.PATCH_CATEGORY + RENDER_PATCH)]
 public static class EntityItemRendererPatch {
 	public const string RENDER_PATCH = "renderpatch";
 
-	internal static readonly string ATTRIBUTE_RENDER_STACK_COUNT = Attributes.Id(MODULE_ID, "stacks");
+	internal static readonly string ATTRIBUTE_RENDER_STACK_COUNT = Attributes.Id(MergeStacksOnGround.MODULE_ID, "stacks");
 
 	private static readonly Vec3f[] OFFSETS = new Vec3f[11] {
 		new(0.0f, 0.0f, 0.0f),

@@ -10,11 +10,9 @@ using Newtonsoft.Json.Linq;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 
-using static Jakojaannos.HandsomeTweaks.Modules.StructuredLangFile.ModuleInfo;
-
 namespace Jakojaannos.HandsomeTweaks.Modules.StructuredLangFile.Patches;
 
-[HarmonyPatchCategory(PATCH_CATEGORY)]
+[HarmonyPatchCategory(StructuredLangFile.PATCH_CATEGORY)]
 [HarmonyPatch(typeof(TranslationService))]
 public static class TranslationServicePatch {
 	private static readonly JsonLoadSettings JSON_LOAD_SETTINGS = new() {

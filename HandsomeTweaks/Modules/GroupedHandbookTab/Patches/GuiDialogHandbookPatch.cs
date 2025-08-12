@@ -1,26 +1,15 @@
 using System.Collections.Generic;
-using System.Linq;
 
 using HarmonyLib;
 
-using Jakojaannos.HandsomeTweaks.Modules.GroupedHandbookTab.Client.Gui;
-
 using Vintagestory.API.Client;
-using Vintagestory.API.Common;
-using Vintagestory.API.Util;
 using Vintagestory.GameContent;
-using Vintagestory.ServerMods.NoObf;
 
 namespace Jakojaannos.HandsomeTweaks.Modules.GroupedHandbookTab.Patches;
 
 [HarmonyPatchCategory(GroupedHandbookTab.PATCH_CATEGORY)]
 [HarmonyPatch(typeof(GuiDialogHandbook))]
 public static class GuiDialogHandbookPatch {
-	[HarmonyPrepare]
-	public static bool IsEnabled() {
-		return GroupedHandbookTab.IsEnabled;
-	}
-
 	/// <summary>
 	/// Remove grouped pages from the "Everything" tab.
 	/// </summary>

@@ -9,11 +9,9 @@ using Jakojaannos.HandsomeTweaks.Config;
 using Vintagestory.API.Client;
 using Vintagestory.GameContent;
 
-using static Jakojaannos.HandsomeTweaks.Modules.KeepHandbookHistory.ModuleInfo;
-
 namespace Jakojaannos.HandsomeTweaks.Modules.KeepHandbookHistory.Patches;
 
-[HarmonyPatchCategory(PATCH_CATEGORY)]
+[HarmonyPatchCategory(KeepHandbookHistory.PATCH_CATEGORY)]
 [HarmonyPatch(typeof(GuiDialogHandbook))]
 public static class GuiDialogHandbookPatch {
 	public class GuiState {

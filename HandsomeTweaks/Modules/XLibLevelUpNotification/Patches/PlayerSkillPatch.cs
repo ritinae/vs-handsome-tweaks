@@ -11,11 +11,6 @@ namespace Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification.Patches;
 [HarmonyPatch(typeof(PlayerSkill))]
 [HarmonyPatchCategory(XLibLevelUpNotification.PATCH_CATEGORY)]
 public static class PlayerSkillPatch {
-	[HarmonyPrepare]
-	public static bool IsEnabled() {
-		return XLibLevelUpNotification.IsEnabled;
-	}
-
 	public readonly struct SetExperiencePatchState {
 		public required int LevelBefore { get; init; }
 	}

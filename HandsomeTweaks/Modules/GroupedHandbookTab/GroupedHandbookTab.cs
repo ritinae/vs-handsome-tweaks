@@ -1,39 +1,36 @@
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Util;
 using Vintagestory.GameContent;
 
-using Jakojaannos.HandsomeTweaks.Config;
 using Jakojaannos.HandsomeTweaks.Modules.GroupedHandbookTab.Client.Gui;
-using System.Collections.Generic;
-using Vintagestory.API.Util;
-using System.Collections.Concurrent;
-using System;
-using System.Runtime.CompilerServices;
 using Jakojaannos.HandsomeTweaks.Util;
-using System.Text.RegularExpressions;
 
 namespace Jakojaannos.HandsomeTweaks.Modules.GroupedHandbookTab;
 
-internal class GroupedHandbookTab : ModModule, IClientModModule {
+internal class GroupedHandbookTab : ModModule<HandsomeTweaksModSystem> {
 	public const string MODULE_ID = "groupedhandbooktabs";
 	public const string PATCH_CATEGORY = MODULE_ID;
-	public static GroupedHandbookTab? Instance { get; private set; }
-	public static bool IsEnabled => HandsomeTweaksSettings.Instance.Startup.IsGroupedHandbookTabEnabled;
 
 	protected override string ModuleId => MODULE_ID;
 
-	public GroupedHandbookTab(Mod mod) : base(mod) {
-		Instance = this;
+	public override bool ShouldLoad(EnumAppSide forSide) {
+		return forSide == EnumAppSide.Client;
 	}
 
-	void IClientModModule.StartClientSide(ICoreClientAPI api) {
+	public override void StartClientSide(ICoreClientAPI api) {
 		var handbook = api.ModLoader.GetModSystem<ModSystemSurvivalHandbook>();
 		if (handbook is not null) {
 			RegisterCustomHandbookPages(api, handbook);
 		}
 	}
+
 	private void RegisterCustomHandbookPages(
 		ICoreClientAPI api,
 		ModSystemSurvivalHandbook survivalHandbook
