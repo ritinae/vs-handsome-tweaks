@@ -8,7 +8,6 @@ using Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification.Client.Gui;
 
 namespace Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification.Patches;
 
-[HarmonyPatch(typeof(PlayerSkill))]
 [HarmonyPatchCategory(XLibLevelUpNotification.PATCH_CATEGORY)]
 public static class PlayerSkillPatch {
 	public readonly struct SetExperiencePatchState {
@@ -16,7 +15,7 @@ public static class PlayerSkillPatch {
 	}
 
 	[HarmonyPrefix]
-	[HarmonyPatch(nameof(PlayerSkill.Experience), MethodType.Setter)]
+	[HarmonyPatch(typeof(PlayerSkill), nameof(PlayerSkill.Experience), MethodType.Setter)]
 	public static void SetExperiencePrefix(PlayerSkill __instance, ref SetExperiencePatchState __state) {
 		__state = new() {
 			LevelBefore = __instance.Level,
@@ -24,7 +23,7 @@ public static class PlayerSkillPatch {
 	}
 
 	[HarmonyPostfix]
-	[HarmonyPatch(nameof(PlayerSkill.Experience), MethodType.Setter)]
+	[HarmonyPatch(typeof(PlayerSkill), nameof(PlayerSkill.Experience), MethodType.Setter)]
 	public static void SetExperiencePostfix(PlayerSkill __instance, SetExperiencePatchState __state) {
 		if (__instance.Level <= __state.LevelBefore) {
 			return;

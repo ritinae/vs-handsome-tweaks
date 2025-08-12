@@ -25,7 +25,7 @@
                 //"modding test world",
                 "--tracelog",
                 "--dataPath",
-                "${workspaceFolder}/run-client",
+                "${workspaceFolder}/run-client-1.20.x",
                 "--addModPath",
                 "${workspaceFolder}/HandsomeTweaks/bin/Debug/Mods",
                 "--addOrigin",
@@ -55,7 +55,7 @@
             "args": [
                 "--tracelog",
                 "--dataPath",
-                "${workspaceFolder}/run-server",
+                "${workspaceFolder}/run-server-1.20.x",
                 "--addModPath",
                 "${workspaceFolder}/HandsomeTweaks/bin/Debug/Mods",
                 "--addOrigin",
