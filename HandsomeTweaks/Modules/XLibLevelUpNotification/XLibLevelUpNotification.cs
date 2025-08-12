@@ -1,7 +1,8 @@
 using Vintagestory.API.Client;
+using Vintagestory.API.Common;
 
 using Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification.Client.Gui;
-using Vintagestory.API.Common;
+using Jakojaannos.HandsomeTweaks.Compatibility;
 
 namespace Jakojaannos.HandsomeTweaks.Modules.XLibLevelUpNotification;
 
@@ -10,6 +11,10 @@ internal class XLibLevelUpNotification : ModModule<HandsomeTweaksModSystem> {
 	public const string PATCH_CATEGORY = MODULE_ID;
 
 	protected override string ModuleId => MODULE_ID;
+
+	public override bool ShouldLoad(ICoreAPI api) {
+		return base.ShouldLoad(api) && api.ModLoader.IsModEnabled(ModIds.XLIB);
+	}
 
 	public override bool ShouldLoad(EnumAppSide forSide) {
 		return forSide == EnumAppSide.Client;

@@ -3,7 +3,7 @@
 		"handsometweaks:pathfinder": "Pathfinder"
 	},
 	"characterdesc": {
-		"handsometweaks:pathfinder": "<font color=\"#99c9f9\"><i>Legends foretold she either be walkin' or playing DnD. Who knows.</i></font>"
+		"handsometweaks:pathfinder": "<font color=\"#99c9f9\"><i>Legends foretold she either be walkin' or playing DnD. Who knows.</i></font><br><br>Starts with additional fruit food items. Starts at 50% fruit nutrition."
 	},
 
 	"handbook-category": {
@@ -15,6 +15,6 @@
 		"handsometweaks:diabetic": "<font color=\"#ff8484\">• Diabetic</font>"
 	},
 	"traitdesc": {
-		"handsometweaks:diabetic": "Must keep attention to blood sugar levels. Takes damage if <i>Fruit</i> Nutrition is <5% or >95%"
+		"handsometweaks:diabetic": "Must keep attention to blood sugar levels. Starts taking damage if <i>Fruit</i> Nutrition is less than 5% or greater than >95%"
 	}
 }

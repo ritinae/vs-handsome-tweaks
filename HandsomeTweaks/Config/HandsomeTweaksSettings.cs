@@ -16,13 +16,13 @@ internal sealed class HandsomeTweaksSettings {
 
 	// Must contain a property `Is<ModuleName>Enabled` for every mod module.
 	internal sealed class StartupSettings {
-		public bool IsMergeStacksOnGroundEnabled { get; set; } = true;
+		public bool IsMergeStacksOnGroundEnabled { get; set; } = false;
 		public bool IsKeepHandbookHistoryEnabled { get; set; } = true;
 		public bool IsXLibLevelUpNotificationEnabled { get; set; } = true;
 		public bool IsResonatorMechanicalPowerEnabled { get; set; } = true;
 		public bool IsCulinaryTweaksEnabled { get; set; } = true;
 		public bool IsPathfinderClassEnabled { get; set; } = true;
-		public bool IsGroupedHandbookTabEnabled { get; set; } = true;
+		public bool IsGroupedHandbookTabEnabled { get; set; } = false;
 		public bool IsFirepitTweaksEnabled { get; set; } = true;
 	}
 

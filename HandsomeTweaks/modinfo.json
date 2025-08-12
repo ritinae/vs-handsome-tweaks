@@ -1,13 +1,16 @@
 {
-    "type": "code",
-    "modid": "handsometweaks",
-    "name": "Handsome Tweaks",
-    "authors": [
-        "Jakojäännös"
-    ],
-    "description": "Various tweaks and improvements to small gripes encountered while playing.",
-    "version": "1.0.0",
-    "dependencies": {
-        "game": ""
-    }
+	"type": "code",
+	"modid": "handsometweaks",
+	"name": "Handsome Tweaks",
+	"authors": [ "Jakojäännös", "ritinae" ],
+	"contributors": [ "Handsome Dogs" ],
+	"description": "Various tweaks and improvements to small gripes encountered while playing.",
+	"version": "1.0.0",
+	"networkVersion": "1.0.0",
+	"side": "universal",
+	"requiredOnClient": true,
+	"requiredOnServer": true,
+	"dependencies": {
+		"game": "1.20.12"
+	}
 }

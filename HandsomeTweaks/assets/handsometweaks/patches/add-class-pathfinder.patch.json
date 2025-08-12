@@ -1,6 +1,6 @@
 [
 	{
-		"enabled": true,
+		"enabled": false,
 		"file": "game:config/characterclasses.json",
 		"op": "addmerge",
 		"path": "/-",
@@ -23,7 +23,7 @@
 		}
 	},
 	{
-		"enabled": true,
+		"enabled": false,
 		"file": "game:config/traits.json",
 		"op": "addeach",
 		"path": "/-",
