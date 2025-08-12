@@ -87,18 +87,18 @@ internal class GroupedHandbookTab : ModModule, IClientModModule {
 				{ "game:nugget", "game:nugget-ore" },
 			};
 
-			var allItems = api
+			var everything = api
 				.World
-				.Items
+				.Collectibles
 				.Where(i => i?.Code != null)
 				.SelectMany(i => i.GetHandBookStacks(api) ?? new List<ItemStack>(0));
 
 			var groups = new ConcurrentDictionary<AssetLocation, List<ItemStack>>();
-			foreach (var itemStack in allItems) {
-				var item = itemStack.Item;
+			foreach (var itemStack in everything) {
+				var collectible = itemStack.Collectible;
 				var isCustom = false;
 				foreach (var (customGroup, patterns) in customGroups) {
-					if (patterns.Any(p => p.IsMatch(item.Code))) {
+					if (patterns.Any(p => p.IsMatch(collectible.Code))) {
 						groups
 							.GetOrAdd(customGroup, _ => new List<ItemStack>())
 							.Add(itemStack);
@@ -111,14 +111,14 @@ internal class GroupedHandbookTab : ModModule, IClientModModule {
 					continue;
 				}
 
-				var variant = item.VariantStrict;
+				var variant = collectible.VariantStrict;
 				if (variant is null) {
-					Mod.Logger.Error($"No variants for \"{item.Code}\"");
+					Mod.Logger.Error($"No variants for \"{collectible.Code}\"");
 					continue;
 				}
 
 				// First pass: just reduce down to the bare "base" code
-				var baseCode = item.Code;
+				var baseCode = collectible.Code;
 				foreach (var (_, value) in variant) {
 					baseCode = baseCode.WithoutPathPart(value);
 				}
@@ -126,7 +126,7 @@ internal class GroupedHandbookTab : ModModule, IClientModModule {
 				// Second pass: apply exceptions
 				var preservedKeys = variantMappings
 					.GetValueOrDefault(baseCode) ?? Array.Empty<string>();
-				var code = item.Code;
+				var code = collectible.Code;
 				foreach (var (key, value) in variant) {
 					var isPreserved = preservedKeys.Contains(key);
 					if (isPreserved) {

@@ -35,7 +35,7 @@ internal class GuiHandbookGroupedItemPage : GuiHandbookItemStackPage {
 
 		_stackTextCache = new();
 		foreach (var stack in Stacks) {
-			if (_stackTextCache.ContainsKey(stack.Item.Code)) {
+			if (_stackTextCache.ContainsKey(stack.Collectible.Code)) {
 				// FIXME: e.g. shields have funky variants with multiple items with the same code and id
 				continue;
 			}
@@ -43,7 +43,7 @@ internal class GuiHandbookGroupedItemPage : GuiHandbookItemStackPage {
 			// FIXME: some ItemWearable references null when getting descriptions
 			var searchFullText = stack.GetName();// + " " + stack.GetDescription(capi.World, dummySlot);
 
-			_stackTextCache.Add(stack.Item.Code, new() {
+			_stackTextCache.Add(stack.Collectible.Code, new() {
 				Title = searchTitle,
 				All = searchFullText,
 			});
@@ -84,7 +84,7 @@ internal class GuiHandbookGroupedItemPage : GuiHandbookItemStackPage {
 		var mainTitleOffset = 0.25f;
 		var groupMemberOffset = -0.125f;
 		var group = GetOffsetTextMatchWeight(TextCacheTitle, TextCacheAll, searchText, searchWeightOffset + mainTitleOffset);
-		var stacks = Stacks.Max(stack => GetOffsetTextMatchWeight(_stackTextCache[stack.Item.Code], searchText, searchWeightOffset + groupMemberOffset));
+		var stacks = Stacks.Max(stack => GetOffsetTextMatchWeight(_stackTextCache[stack.Collectible.Code], searchText, searchWeightOffset + groupMemberOffset));
 
 		return Math.Max(group, stacks);
 	}
