@@ -16,8 +16,6 @@
                 "program": "${env:VINTAGE_STORY}/1.20.x/Vintagestory"
             },
             "preLaunchTask": "build",
-            "justMyCode": false,
-            "requireExactSource": false,
             "args": [
                 //"--playStyle",
                 //"preset-surviveandbuild",

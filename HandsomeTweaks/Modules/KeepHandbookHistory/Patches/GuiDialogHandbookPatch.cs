@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Emit;
 
 using HarmonyLib;
@@ -7,6 +8,7 @@ using HarmonyLib;
 using Jakojaannos.HandsomeTweaks.Config;
 
 using Vintagestory.API.Client;
+using Vintagestory.API.Util;
 using Vintagestory.GameContent;
 
 namespace Jakojaannos.HandsomeTweaks.Modules.KeepHandbookHistory.Patches;
@@ -17,6 +19,7 @@ public static class GuiDialogHandbookPatch {
 	public class GuiState {
 		public Stack<BrowseHistoryElement> BrowseHistory { get; set; } = new();
 		public string? SearchText { get; set; } = null;
+		public string? CurrentCatgoryCode { get; set; }
 	}
 
 	private static HandsomeTweaksSettings.KeepHandbookHistorySettings Settings
@@ -25,6 +28,7 @@ public static class GuiDialogHandbookPatch {
 	[HarmonyPrefix]
 	[HarmonyPatch(nameof(GuiDialogHandbook.OnGuiClosed))]
 	public static void OnGuiClosedPrefix(
+		GuiDialogHandbook __instance,
 		Stack<BrowseHistoryElement> ___browseHistory,
 		GuiComposer ___overviewGui,
 		ref GuiState? __state
@@ -40,7 +44,8 @@ public static class GuiDialogHandbookPatch {
 			// previous search text.
 			SearchText = isDetailsViewOpen
 				? null
-				: ___overviewGui.GetTextInput("searchField").GetText()
+				: ___overviewGui.GetTextInput("searchField").GetText(),
+			CurrentCatgoryCode = __instance.currentCatgoryCode,
 		};
 		foreach (var item in ___browseHistory) {
 			__state.BrowseHistory.Push(item);
@@ -54,6 +59,10 @@ public static class GuiDialogHandbookPatch {
 	[HarmonyPostfix]
 	[HarmonyPatch(nameof(GuiDialogHandbook.OnGuiClosed))]
 	public static void OnGuiClosedPostfix(
+		GuiDialogHandbook __instance,
+		GuiComposer ___overviewGui,
+		GuiComposer ___detailViewGui,
+		GuiTab[] ___tabs,
 		ref Stack<BrowseHistoryElement> ___browseHistory,
 		ref GuiState? __state
 	) {
@@ -81,6 +90,27 @@ public static class GuiDialogHandbookPatch {
 				PosY = 0
 			});
 		}
+
+		var category = __state.CurrentCatgoryCode;
+		var curTab = ___tabs
+			.Where(t => t.Name == category)
+			.FirstOrDefault()
+			?.DataInt ?? 0;
+
+		__instance.selectTab(category);
+		___overviewGui?.GetVerticalTab("verticalTabs").SetValue(curTab, triggerHandler: false);
+		___detailViewGui?.GetVerticalTab("verticalTabs").SetValue(curTab, triggerHandler: false);
+	}
+
+	[HarmonyPostfix]
+	[HarmonyPatch("OnDetailViewTabClicked")]
+	public static void OnDetailViewTabClickedPostfix(
+		int index,
+		GuiComposer ___overviewGui,
+		GuiComposer ___detailViewGui
+	) {
+		___overviewGui?.GetVerticalTab("verticalTabs").SetValue(index, triggerHandler: false);
+		___detailViewGui?.GetVerticalTab("verticalTabs").SetValue(index, triggerHandler: false);
 	}
 
 	[HarmonyTranspiler]
@@ -132,6 +162,8 @@ public static class GuiDialogHandbookPatch {
 		} else {
 			initDetailGui(@this);
 		}
+
+		@this.selectTab(@this.currentCatgoryCode);
 	}
 
 	[HarmonyReversePatch]
