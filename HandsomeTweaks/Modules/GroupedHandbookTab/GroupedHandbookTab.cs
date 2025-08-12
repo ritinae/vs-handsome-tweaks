@@ -12,6 +12,7 @@ using System.Collections.Concurrent;
 using System;
 using System.Runtime.CompilerServices;
 using Jakojaannos.HandsomeTweaks.Util;
+using System.Text.RegularExpressions;
 
 namespace Jakojaannos.HandsomeTweaks.Modules.GroupedHandbookTab;
 
@@ -45,15 +46,41 @@ internal class GroupedHandbookTab : ModModule, IClientModModule {
 
 			// Exceptions for the variant removal logic. Keeps the listed
 			// variants as part of the base path.
-			var variantAsPartOfBase = new Dictionary<AssetLocation, string[]> {
+			var variantMappings = new Dictionary<AssetLocation, string[]> {
 				// `game:ontree` -> `game:ontree-bellpepper`
 				{ "game:ontree", new string[]{ "type" } },
 				// `game:armor` -> `game:armor-{bodypart}`
-				{ "game:armor", new string[]{ "bodypart" } }
+				{ "game:armor", new string[]{ "bodypart" } },
+			};
+
+			// Custom groups. Items in these are removed from other groups
+			// and added only to the custom group instead.
+			var customGroups = new Dictionary<AssetLocation, Regex[]> {
+				{
+					"game:weapon-ruined", new Regex[] {
+						new("^game:(axe|blade|club|knife|spear)-[a-zA-Z]+-ruined$")
+					}
+				},
+				{
+					"game:weapon-scrap", new Regex[] {
+						new("^game:(axe|blade|club|knife|spear)-[a-zA-Z]+-scrap$")
+					}
+				},
+				{
+					"game:bags", new Regex[] {
+						new("^game:.*backpack.*"),
+						new("^game:(basket|linensack|miningbag).*"),
+					}
+				},
+				{
+					"game:bags-elk", new Regex[] {
+						new("^game:.*saddlebags.*")
+					}
+				},
 			};
 
 			// For making things a bit more sensible for translations/configs
-			var remappings = new Dictionary<AssetLocation, AssetLocation> {
+			var renames = new Dictionary<AssetLocation, AssetLocation> {
 				// Vanilla crushed ores are simply `crushed-{ore}`
 				{ "game:crushed", "game:crushed-ore" },
 				// Not to be confused with chicken nuggies
@@ -69,6 +96,21 @@ internal class GroupedHandbookTab : ModModule, IClientModModule {
 			var groups = new ConcurrentDictionary<AssetLocation, List<ItemStack>>();
 			foreach (var itemStack in allItems) {
 				var item = itemStack.Item;
+				var isCustom = false;
+				foreach (var (customGroup, patterns) in customGroups) {
+					if (patterns.Any(p => p.IsMatch(item.Code))) {
+						groups
+							.GetOrAdd(customGroup, _ => new List<ItemStack>())
+							.Add(itemStack);
+						isCustom = true;
+						break;
+					}
+				}
+
+				if (isCustom) {
+					continue;
+				}
+
 				var variant = item.VariantStrict;
 				if (variant is null) {
 					Mod.Logger.Error($"No variants for \"{item.Code}\"");
@@ -82,7 +124,7 @@ internal class GroupedHandbookTab : ModModule, IClientModModule {
 				}
 
 				// Second pass: apply exceptions
-				var preservedKeys = variantAsPartOfBase
+				var preservedKeys = variantMappings
 					.GetValueOrDefault(baseCode) ?? Array.Empty<string>();
 				var code = item.Code;
 				foreach (var (key, value) in variant) {
@@ -94,12 +136,13 @@ internal class GroupedHandbookTab : ModModule, IClientModModule {
 					code = code.WithoutPathPart(value);
 				}
 
-				// Post-processing: apply remappings
-				code = remappings.Get(code, code);
+				// Post-processing: apply renames
+				code = renames.Get(code, code);
 
 				// Collect to groups
-				var group = groups.GetOrAdd(code, _ => new List<ItemStack>());
-				group.Add(itemStack);
+				groups
+					.GetOrAdd(code, _ => new List<ItemStack>())
+					.Add(itemStack);
 			}
 
 			foreach (var (key, group) in groups) {
