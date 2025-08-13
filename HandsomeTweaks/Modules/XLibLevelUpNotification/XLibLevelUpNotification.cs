@@ -13,7 +13,7 @@ internal class XLibLevelUpNotification : ModModule<HandsomeTweaksModSystem> {
 	protected override string ModuleId => MODULE_ID;
 
 	public override bool ShouldLoad(ICoreAPI api) {
-		return base.ShouldLoad(api) && api.ModLoader.IsModEnabled(ModIds.XLIB);
+		return base.ShouldLoad(api) && api.ModLoader.IsModEnabled(ModIds.XLIB) && !api.ModLoader.IsModEnabled(ModIds.XSKILLS_GILDED);
 	}
 
 	public override bool ShouldLoad(EnumAppSide forSide) {
