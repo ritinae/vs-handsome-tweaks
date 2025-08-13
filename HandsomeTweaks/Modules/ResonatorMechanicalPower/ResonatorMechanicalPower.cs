@@ -11,6 +11,9 @@ internal class ResonatorMechanicalPower : ModModule<HandsomeTweaksModSystem> {
 	protected override string ModuleId => MODULE_ID;
 
 	public override void Start(ICoreAPI api) {
+		base.Start(api);
+
 		api.RegisterBlockClass(nameof(BlockMPResonator), typeof(BlockMPResonator));
+		api.RegisterBlockEntityBehaviorClass(nameof(BEBehaviorMPConsumerWithDefaultRendering), typeof(BEBehaviorMPConsumerWithDefaultRendering));
 	}
 }
