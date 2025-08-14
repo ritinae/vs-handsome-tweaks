@@ -16,6 +16,7 @@ internal sealed class HandsomeTweaksSettings {
 
 	// Must contain a property `Is<ModuleName>Enabled` for every mod module.
 	internal sealed class StartupSettings {
+		public bool IsArmoryTweaksEnabled { get; set; } = true;
 		public bool IsMergeStacksOnGroundEnabled { get; set; } = false;
 		public bool IsKeepHandbookHistoryEnabled { get; set; } = true;
 		public bool IsXLibLevelUpNotificationEnabled { get; set; } = true;
@@ -42,11 +43,9 @@ internal sealed class HandsomeTweaksSettings {
 		public int HistoryMaxSize { get; set; } = 50;
 	}
 
-	private static ILogger? s_logger;
 	internal static HandsomeTweaksSettings Instance { get; set; } = new();
 
-	internal static void SyncWithModConfig(Mod mod, ICoreAPI api) {
-		s_logger = mod.Logger;
+	internal static void SyncWithModConfig(ICoreAPI api) {
 		try {
 			var existingConfig = api.LoadModConfig<HandsomeTweaksSettings>(FILENAME);
 			if (existingConfig is not null) {
@@ -55,6 +54,9 @@ internal sealed class HandsomeTweaksSettings {
 		} finally {
 			// Always store mod config in case new fields have been added.
 			api.StoreModConfig(Instance, FILENAME);
+
+			// Write configs for JSON patches
+			api.World.Config.SetBool("handsometweaks:is-armory-tweaks-enabled", Instance.Startup.IsArmoryTweaksEnabled);
 		}
 	}
 
@@ -67,12 +69,8 @@ internal sealed class HandsomeTweaksSettings {
 		var moduleName = type.Name;
 
 		var settingName = $"Is{moduleName}Enabled";
-		var prop = props.FirstOrDefault(p => p.Name == settingName);
-		if (prop is null) {
-			s_logger?.Error($"\"{settingName}\" is missing!");
-			return false;
-		}
-
+		var prop = props.FirstOrDefault(p => p.Name == settingName)
+			?? throw new InvalidOperationException($"\"{settingName}\" is missing!");
 		return prop != null && prop.GetValue(Instance.Startup) is bool value && value;
 	}
 }
