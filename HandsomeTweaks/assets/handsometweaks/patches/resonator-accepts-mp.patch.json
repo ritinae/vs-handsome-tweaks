@@ -1,11 +1,15 @@
 [
     {
+        "side": "server",
+        "condition": { "when": "handsometweaks:is-resonator-mechanical-power-enabled", "isValue": true },
         "file": "game:blocktypes/machine/resonator.json",
         "op": "addmerge",
         "path": "/entityBehaviors/-",
         "value": { "name": "BEBehaviorMPConsumerWithDefaultRendering", "properties": { "resistance": 0.05 } }
     },
     {
+        "side": "server",
+        "condition": { "when": "handsometweaks:is-resonator-mechanical-power-enabled", "isValue": true },
         "file": "game:blocktypes/machine/resonator.json",
         "op": "replace",
         "path": "/class",

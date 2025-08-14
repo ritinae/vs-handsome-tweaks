@@ -57,6 +57,7 @@ internal sealed class HandsomeTweaksSettings {
 
 			// Write configs for JSON patches
 			api.World.Config.SetBool("handsometweaks:is-armory-tweaks-enabled", Instance.Startup.IsArmoryTweaksEnabled);
+			api.World.Config.SetBool("handsometweaks:is-resonator-mechanical-power-enabled", Instance.Startup.IsResonatorMechanicalPowerEnabled);
 		}
 	}
 
