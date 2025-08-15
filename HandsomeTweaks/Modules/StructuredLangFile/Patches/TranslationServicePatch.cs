@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 using HarmonyLib;
@@ -9,6 +10,7 @@ using Newtonsoft.Json.Linq;
 
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.Util;
 
 namespace Jakojaannos.HandsomeTweaks.Modules.StructuredLangFile.Patches;
 
@@ -34,7 +36,7 @@ public static class TranslationServicePatch {
 		Dictionary<string, string> ___wildcardCache,
 		bool lazyLoad = false
 	) {
-		Load(__instance, ref ___preLoadAssetsPath, ref ___loaded, ___logger, ___assetManager, __instance.LanguageCode, ref ___entryCache, ref ___regexCache, ref ___wildcardCache, lazyLoad);
+		Load(ref ___preLoadAssetsPath, ref ___loaded, ___logger, ___assetManager, __instance.LanguageCode, ref ___entryCache, ref ___regexCache, ref ___wildcardCache, lazyLoad);
 		// Prevent the original code from running
 		return false;
 	}
@@ -42,7 +44,6 @@ public static class TranslationServicePatch {
 	/* Method mostly copy-pasted from the original TranslationService. */
 	// FIXME: just PR these changes to VSApi
 	private static void Load(
-		TranslationService __instance,
 		ref string? preLoadAssetsPath,
 		ref bool loaded,
 		ILogger logger,
@@ -70,7 +71,7 @@ public static class TranslationServicePatch {
 				var json = asset.ToText();
 
 				/* === MODIFIED CODE STARTS === */
-				LoadEntries(__instance, logger, entryCache, regexCache, wildcardCache, JToken.Parse(json), asset.Location.Domain);
+				LoadEntries(entryCache, regexCache, wildcardCache, JToken.Parse(json), asset.Location.Domain);
 				/* === MODIFIED CODE ENDS === */
 			} catch (Exception ex) {
 				logger.Error($"Failed to load language file: {asset.Name}");
@@ -83,32 +84,61 @@ public static class TranslationServicePatch {
 		wildcardCache = localWildcardCache;
 	}
 
-	private static void LoadEntries(
-		TranslationService __instance,
-		ILogger logger,
-		Dictionary<string, string> entryCache,
-		Dictionary<string, KeyValuePair<Regex, string>> regexCache,
-		Dictionary<string, string> wildcardCache,
-		JToken json,
-		string domain = GlobalConstants.DefaultDomain,
-		string key = ""
-	) {
+	private static void LoadEntries(Dictionary<string, string> entryCache, Dictionary<string, KeyValuePair<Regex, string>> regexCache, Dictionary<string, string> wildcardCache, JToken json, string domain = GlobalConstants.DefaultDomain) {
+		var key = new StringBuilder(domain, 256)
+			.Append(AssetLocation.LocationSeparator);
+		LoadEntries(entryCache, regexCache, wildcardCache, json, key, domain, isFirstPart: true);
+	}
+
+	private static void LoadEntries(Dictionary<string, string> entryCache, Dictionary<string, KeyValuePair<Regex, string>> regexCache, Dictionary<string, string> wildcardCache, JToken json, StringBuilder key, string domain, bool isFirstPart) {
 		switch (json) {
 			case JObject jsonObject:
+				if (!isFirstPart) {
+					key.Append('-');
+				}
+
+				var prefixLength = key.Length;
 				foreach (var property in jsonObject.Properties()) {
-					var newKey = key.Length == 0
-						? property.Name
-						: $"{key}-{property.Name}";
-					LoadEntries(__instance, logger, entryCache, regexCache, wildcardCache, property.Value, domain, newKey);
+					key.Length = prefixLength;
+					key.Append(property.Name);
+					LoadEntries(entryCache, regexCache, wildcardCache, property.Value, key, domain, isFirstPart: false);
 				}
 				break;
-			case JValue jsonValue when jsonValue.Type == JTokenType.String && key.Length > 0:
-				var value = jsonValue.ToString();
-				LoadEntry(__instance, entryCache, regexCache, wildcardCache, new(key, value), domain);
+			case JValue jsonValue when jsonValue.Type == JTokenType.String && !isFirstPart:
+				LoadEntry(entryCache, regexCache, wildcardCache, key, jsonValue.ToString(), domain);
 				break;
 			default:
-				throw new InvalidOperationException($"Unexpected token while parsing language file: {json.Type}");
+				throw new InvalidOperationException($"Unexpected token: {json.Type}");
 		}
+	}
+
+	private static void LoadEntry(Dictionary<string, string> entryCache, Dictionary<string, KeyValuePair<Regex, string>> regexCache, Dictionary<string, string> wildcardCache, StringBuilder keyBuilder, string value, string domain) {
+		var key = EnsureSingleDomainPrefix(keyBuilder, domain);
+		switch (key.CountChars('*')) {
+			case 0:
+				entryCache[key] = value;
+				break;
+			case 1 when key.EndsWith('*'):
+				wildcardCache[key.TrimEnd('*')] = value;
+				break;
+			// we can probably do better here, as we have our own wildcardsearch now
+			default: {
+					var regex = new Regex("^" + key.Replace("*", "(.*)") + "$", RegexOptions.Compiled);
+					regexCache[key] = new KeyValuePair<Regex, string>(regex, value);
+					break;
+				}
+		}
+	}
+
+	private static string EnsureSingleDomainPrefix(StringBuilder keyBuilder, string domain = GlobalConstants.DefaultDomain) {
+		var key = keyBuilder.ToString();
+		var defaultDomainEndIndex = domain.Length + 1;
+		if (key.IndexOf(AssetLocation.LocationSeparator, defaultDomainEndIndex) >= 0) {
+			// Key contains a custom prefix, drop the default prefix
+			return key[defaultDomainEndIndex..];
+		}
+
+		return key;
 	}
 
 	[HarmonyReversePatch]
@@ -121,5 +151,4 @@ public static class TranslationServicePatch {
 		KeyValuePair<string, string> entry,
 		string domain
 	) => throw new NotImplementedException("Reverse patch stub called!");
-
 }
