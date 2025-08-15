@@ -1,4 +1,8 @@
 {
+	"blockhelp": {
+		"firepit-insert": "Insert"
+	},
+
 	"xskills": {
 		"level-up": {
 			"label": "{0} increased to {1}",
