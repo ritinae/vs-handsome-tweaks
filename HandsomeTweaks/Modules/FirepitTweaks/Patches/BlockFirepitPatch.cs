@@ -15,8 +15,8 @@ public static class BlockFirepitPatch {
 	public static void OnLoadedPostfix(BlockFirepit __instance, ref WorldInteraction[] ___interactions, ICoreAPI api) {
 		var insertableStacks = ObjectCacheUtil.GetOrCreate(api, "handsometweaks:firepittweaks-firepitInsertableStacks", () => {
 			var stacks = new ItemStack[] {
-				new(api.World.GetBlock("game:claypot-burned")),
-				new(api.World.GetBlock("game:crucible-burned")),
+				new(api.World.GetBlock("game:claypot-blue-fired")),
+				new(api.World.GetBlock("game:crucible-blue-fired")),
 			};
 			if (api.ModLoader.IsModSystemEnabled(typeof(CulinaryTweaks.CulinaryTweaks).FullName)) {
 				stacks = stacks.Append(

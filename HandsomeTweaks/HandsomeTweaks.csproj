@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<OutputPath>bin\$(Configuration)\Mods\mod</OutputPath>
+		<LangVersion>default</LangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -13,27 +14,27 @@
 	<!-- Core dependencies -->
 	<ItemGroup>
 		<Reference Include="VintagestoryAPI">
-			<HintPath>$(VINTAGE_STORY)/1.20.x/VintagestoryAPI.dll</HintPath>
+			<HintPath>$(VINTAGE_STORY)/1.21.x/VintagestoryAPI.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 		<Reference Include="VSEssentials">
-			<HintPath>$(VINTAGE_STORY)/1.20.x/Mods/VSEssentials.dll</HintPath>
+			<HintPath>$(VINTAGE_STORY)/1.21.x/Mods/VSEssentials.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="VSSurvivalMod">
-			<HintPath>$(VINTAGE_STORY)/1.20.x/Mods/VSSurvivalMod.dll</HintPath>
+			<HintPath>$(VINTAGE_STORY)/1.21.x/Mods/VSSurvivalMod.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="0Harmony">
-			<HintPath>$(VINTAGE_STORY)/1.20.x/Lib/0Harmony.dll</HintPath>
+			<HintPath>$(VINTAGE_STORY)/1.21.x/Lib/0Harmony.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="cairo-sharp">
-			<HintPath>$(VINTAGE_STORY)/1.20.x/Lib/cairo-sharp.dll</HintPath>
+			<HintPath>$(VINTAGE_STORY)/1.21.x/Lib/cairo-sharp.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Newtonsoft.Json">
-			<HintPath>$(VINTAGE_STORY)/1.20.x/Lib/Newtonsoft.Json.dll</HintPath>
+			<HintPath>$(VINTAGE_STORY)/1.21.x/Lib/Newtonsoft.Json.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 	</ItemGroup>
@@ -42,13 +43,7 @@
 	<ItemGroup>
 		<!-- For level up notification -->
 		<Reference Include="XLib">
-			<HintPath>$(VINTAGE_STORY_DEV_MODS)/1.20.x/xlib/xlib.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-
-		<!-- For saucepan tweaks -->
-		<Reference Include="ACulinaryArtillery">
-			<HintPath>$(VINTAGE_STORY_DEV_MODS)/1.20.x/ACulinaryArtillery/ACulinaryArtillery.dll</HintPath>
+			<HintPath>../../lib/xlib/xlib.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 	</ItemGroup>

@@ -1,7 +1,4 @@
-using ACulinaryArtillery;
-
 using HarmonyLib;
-
 using Vintagestory.API.Common;
 using Vintagestory.GameContent;
 
@@ -41,7 +38,8 @@ public static class BlockPatch {
 		if (__instance is BlockFirepit @this && @this.Stage == 5) {
 			var blockEntity = world.BlockAccessor.GetBlockEntity(blockSel.Position);
 			var itemStack = byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack;
-			if (blockEntity is BlockEntityFirepit beFirepit && itemStack?.Collectible is BlockSaucepan) {
+			var isSaucepan = itemStack?.Collectible.Class == "BlockSaucepan";
+			if (blockEntity is BlockEntityFirepit beFirepit && isSaucepan) {
 				// Try to put the saucepan to the input slot. The active hotbar
 				// slot is guaranteed to be non-null, as itemstack was already
 				// validated to be holding a saucepan.
