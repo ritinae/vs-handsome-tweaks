@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using HarmonyLib;
 
 using Vintagestory.API.Client;
@@ -14,23 +16,26 @@ public static class BlockFirepitPatch {
 	[HarmonyPatch(nameof(BlockFirepit.OnLoaded))]
 	public static void OnLoadedPostfix(BlockFirepit __instance, ref WorldInteraction[] ___interactions, ICoreAPI api) {
 		var insertableStacks = ObjectCacheUtil.GetOrCreate(api, "handsometweaks:firepittweaks-firepitInsertableStacks", () => {
-			var stacks = new ItemStack[] {
+			var stacks = new List<ItemStack>() {
 				new(api.World.GetBlock("game:claypot-blue-fired")),
 				new(api.World.GetBlock("game:crucible-blue-fired")),
 			};
 			if (api.ModLoader.IsModSystemEnabled(typeof(CulinaryTweaks.CulinaryTweaks).FullName)) {
-				stacks = stacks.Append(
-					new ItemStack(api.World.GetBlock("aculinaryartillery:saucepan-burned"))
-				);
+				var patterns = new AssetLocation[] {
+					"aculinaryartillery:saucepan-*-fired",
+					"aculinaryartillery:cauldron-*",
+					"aculinaryartillery:cauldronmini-*"
+				};
 
-				foreach (var block in api.World.Blocks) {
-					if (block.Code.BeginsWith("aculinaryartillery", "cauldron")) {
-						stacks = stacks.Append(new ItemStack(block));
+				foreach (var pattern in patterns) {
+					var matches = api.World.SearchBlocks(pattern);
+					foreach (var insertableBlock in matches) {
+						stacks.Add(new ItemStack(insertableBlock));
 					}
 				}
 			}
 
-			return stacks;
+			return stacks.ToArray();
 		});
 
 		___interactions = ObjectCacheUtil.GetOrCreate(
