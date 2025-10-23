@@ -8,12 +8,12 @@
             "name": "Launch Client (Debug)",
             "type": "coreclr",
             "request": "launch",
-            "program": "${env:VINTAGE_STORY}/1.20.x/Vintagestory.exe",
+            "program": "${env:VINTAGE_STORY}/1.21.x/Vintagestory.exe",
             "linux": {
-                "program": "${env:VINTAGE_STORY}/1.20.x/Vintagestory"
+                "program": "${env:VINTAGE_STORY}/1.21.x/Vintagestory"
             },
             "osx": {
-                "program": "${env:VINTAGE_STORY}/1.20.x/Vintagestory"
+                "program": "${env:VINTAGE_STORY}/1.21.x/Vintagestory"
             },
             "preLaunchTask": "build",
             "args": [
@@ -23,7 +23,7 @@
                 //"modding test world",
                 "--tracelog",
                 "--dataPath",
-                "${workspaceFolder}/run-client-1.20.x",
+                "${workspaceFolder}/run-client-1.21.x",
                 "--addModPath",
                 "${workspaceFolder}/HandsomeTweaks/bin/Debug/Mods",
                 "--addOrigin",
@@ -42,18 +42,18 @@
             "name": "Launch Server",
             "type": "coreclr",
             "request": "launch",
-            "program": "${env:VINTAGE_STORY}/1.20.x/VintagestoryServer.exe",
+            "program": "${env:VINTAGE_STORY}/1.21.x/VintagestoryServer.exe",
             "linux": {
-                "program": "${env:VINTAGE_STORY}/1.20.x/VintagestoryServer"
+                "program": "${env:VINTAGE_STORY}/1.21.x/VintagestoryServer"
             },
             "osx": {
-                "program": "${env:VINTAGE_STORY}/1.20.x/VintagestoryServer"
+                "program": "${env:VINTAGE_STORY}/1.21.x/VintagestoryServer"
             },
             "preLaunchTask": "build",
             "args": [
                 "--tracelog",
                 "--dataPath",
-                "${workspaceFolder}/run-server-1.20.x",
+                "${workspaceFolder}/run-server-1.21.x",
                 "--addModPath",
                 "${workspaceFolder}/HandsomeTweaks/bin/Debug/Mods",
                 "--addOrigin",

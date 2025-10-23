@@ -43,7 +43,7 @@
 	<ItemGroup>
 		<!-- For level up notification -->
 		<Reference Include="XLib">
-			<HintPath>../../lib/xlib/xlib.dll</HintPath>
+			<HintPath>$(VINTAGE_STORY_DEV_MODS)/1.21.x/xlib/xlib.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 	</ItemGroup>
