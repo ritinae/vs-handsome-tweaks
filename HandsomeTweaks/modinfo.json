@@ -3,14 +3,14 @@
 	"modid": "handsometweaks",
 	"name": "Handsome Tweaks",
 	"authors": [ "Jakojäännös", "ritinae" ],
-	"contributors": [ "Handsome Dogs" ],
+	"contributors": [ "Handsome Dogs", "LambdaSix" ],
 	"description": "Various tweaks and improvements to small gripes encountered while playing.",
-	"version": "1.2.0",
+	"version": "1.3.0",
 	"networkVersion": "1.0.0",
 	"side": "universal",
 	"requiredOnClient": true,
 	"requiredOnServer": true,
 	"dependencies": {
-		"game": "1.20.12"
+		"game": "1.21.1"
 	}
 }
